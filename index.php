@@ -50,15 +50,21 @@ class Bundle {
 		return str_replace(array_keys($replace), array_values($replace), $source);
 	}
 
-	function get_name() {
-		$ret = 'App';
+	function get_icon_url($name) {
+		$contents = $this->get_contents();
+		$ret = $this->url . $contents['icon-72'];
+		return $ret;
+	}
+
+	function get_metadata($name) {
+		$ret = false;
 		$contents = $this->get_contents();
 		$plist = simplexml_load_file($contents['plist']);
 		// find metadata dict
-		$items = $plist->dict->array->dict;
+		$items = $plist->dict->array->dict->dict;
 		$n = 0;
-		foreach ($items->dict->key as $key) {
-			if ($key == 'title') {
+		foreach ($items->key as $key) {
+			if ($key == $name) {
 				$tindex = $n;
 				break;
 			} else {
@@ -66,9 +72,13 @@ class Bundle {
 			}
 		}
 		if ($tindex) {
-			$ret = $items->dict->string[$tindex];
+			$ret = $items->string[$tindex];
 		}
 		return $ret;
+	}
+
+	function get_title() {
+		return $this->get_metadata('title');
 	}
 
 	function get_plist_contents() {
@@ -94,8 +104,10 @@ if (!isset($_GET['url'])) :
 				$contents = $bundle->get_contents();
 				$is_bundle = (!empty($contents));
 				if ($is_bundle) {
-					$app_name = $bundle->get_name();
-					echo '<li><a href="itms-services://?action=download-manifest&url=' . $bundle->url . $entry . '.plist">' . $app_name . '</a></li>';
+					$app_name = $bundle->get_title();
+					$icon = $bundle->get_icon_url();
+					$url = $bundle->url . $entry . '.plist';
+					printf('<li><img src="%s" height="72px" width="72px;"/><a href="itms-services://?action=download-manifest&url=%s">%s</a></li>', $icon, $url, $app_name);
 				}
 			}
 		}
