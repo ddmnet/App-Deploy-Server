@@ -7,8 +7,8 @@ define('BUNDLE_ROOT', 'bundles');
 
 require_once 'classes/Bundle.class.php';
 
-if (!isset($_GET['url'])) :
-	ob_start();
+if (!isset($_GET['url'])) {
+	$apps = array();
 	// Display all the bundles.
 	if ($bundlesDir = opendir(BUNDLE_ROOT)) {
 		while (false !== ($entry = readdir($bundlesDir))) {
@@ -18,17 +18,14 @@ if (!isset($_GET['url'])) :
 				$contents = $bundle->get_contents();
 				$is_bundle = (!empty($contents));
 				if ($is_bundle) {
-					$app_name = $bundle->get_title();
-					$icon = $bundle->get_icon_url();
-					$url = $bundle->url . $entry . '.plist';
-					printf('<li><img src="%s" height="72px" width="72px;"/><a href="itms-services://?action=download-manifest&url=%s">%s</a></li>', $icon, $url, $app_name);
+					$apps[] = $bundle;
 				}
 			}
 		}
 	}
 	$app_list = ob_get_clean();
 	include 'layout/index.php';
-else:
+} else {
 	// Serve up the processed plist file.
 	header('Content-Type: text/xml');
 	$uri = $_GET['url'];
@@ -40,4 +37,4 @@ else:
 	if ($is_bundle) {
 		echo $bundle->get_plist_contents();
 	}
-endif;
+}
