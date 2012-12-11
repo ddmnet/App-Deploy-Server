@@ -50,6 +50,27 @@ class Bundle {
 		return str_replace(array_keys($replace), array_values($replace), $source);
 	}
 
+	function get_name() {
+		$ret = 'App';
+		$contents = $this->get_contents();
+		$plist = simplexml_load_file($contents['plist']);
+		// find metadata dict
+		$items = $plist->dict->array->dict;
+		$n = 0;
+		foreach ($items->dict->key as $key) {
+			if ($key == 'title') {
+				$tindex = $n;
+				break;
+			} else {
+				$n++;
+			}
+		}
+		if ($tindex) {
+			$ret = $items->dict->string[$tindex];
+		}
+		return $ret;
+	}
+
 	function get_plist_contents() {
 		$contents = $this->get_contents();
 		$plist_contents = file_get_contents($contents['plist']);
@@ -73,19 +94,29 @@ if (!isset($_GET['url'])) :
 				$contents = $bundle->get_contents();
 				$is_bundle = (!empty($contents));
 				if ($is_bundle) {
-					echo '<li><a href="itms-services://?action=download-manifest&url=' . $bundle->url . $entry . '.plist">NAME</a></li>';
+					$app_name = $bundle->get_name();
+					echo '<li><a href="itms-services://?action=download-manifest&url=' . $bundle->url . $entry . '.plist">' . $app_name . '</a></li>';
 				}
 			}
 		}
 	}
 ?>
 		</ul>
-		<pre>
-<?
-	print_r($_SERVER);
-?>
-		</pre>
 	</body>
 </html>
+<?
+else:
+	header('Content-Type: text/xml');
+	$uri = $_GET['url'];
+	$s = explode('.', $uri);
+	$bundlename = $s[0];
+	$bundle = new Bundle($bundlename);
+	$contents = $bundle->get_contents();
+	$is_bundle = (!empty($contents));
+	if ($is_bundle) {
+		echo $bundle->get_plist_contents();
+	}
+	//print_r($_SERVER);
+?>
 <?
 endif;
