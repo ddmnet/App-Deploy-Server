@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>DDM App Deployment Panel</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="3p/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 		<link href="3p/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen" />
 		<link href="layout/css/style.css" rel="stylesheet" media="screen" />
