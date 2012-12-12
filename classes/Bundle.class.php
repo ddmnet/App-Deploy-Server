@@ -45,9 +45,10 @@ class Bundle {
 		return str_replace(array_keys($replace), array_values($replace), $source);
 	}
 
-	function get_icon_url($name) {
+	function get_icon_url($full = true) {
 		$contents = $this->get_contents();
-		$ret = $this->url . $contents['icon-72'];
+
+		$ret = ($full) ? $this->url . $contents['icon-72'] : $contents['icon-72'];
 		return $ret;
 	}
 
