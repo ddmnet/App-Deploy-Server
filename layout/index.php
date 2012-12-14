@@ -21,6 +21,7 @@
 			</div>
 		</div>
 		<div id="primary" class="container">
+			<h1>Hi, james!</h1>
 <?
 			include $use_layout . '.php';
 ?>

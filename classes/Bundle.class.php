@@ -66,6 +66,7 @@ class Bundle {
 		// find metadata dict
 		$items = $plist->dict->array->dict->dict;
 		$n = 0;
+		$tindex = false;
 		foreach ($items->key as $key) {
 			if ($key == $name) {
 				$tindex = $n;
