@@ -47,6 +47,11 @@ class Bundle {
 		return str_replace(array_keys($replace), array_values($replace), $source);
 	}
 
+	function get_readme() {
+		$contents = $this->get_contents();
+		return (isset($contents['readme'])) ? $contents['readme'] : false;
+	}
+
 	function get_icon_url($full = true) {
 		$contents = $this->get_contents();
 

@@ -24,17 +24,30 @@ if (!isset($_GET['url'])) {
 		}
 	}
 	$app_list = ob_get_clean();
+	$use_layout = "app_list";
 	include 'layout/index.php';
 } else {
 	// Serve up the processed plist file.
-	header('Content-Type: text/xml');
 	$uri = $_GET['url'];
 	$s = explode('.', $uri);
 	$bundlename = $s[0];
 	$bundle = new Bundle($bundlename);
 	$contents = $bundle->get_contents();
 	$is_bundle = (!empty($contents));
+
 	if ($is_bundle) {
-		echo $bundle->get_plist_contents();
+		$type = (isset($s[1])) ? $s[1] : 'html';
+		if ($type == 'plist') {
+			header('Content-Type: text/xml');
+			echo $bundle->get_plist_contents();
+		} else {
+			$readme_file = $bundle->get_readme();
+			include_once '3p/markdown.php';
+			if ($readme_file !== false) {
+				$use_layout = "readme";
+				$readme_text = file_get_contents($readme_file);
+				include 'layout/index.php';
+			}
+		}
 	}
 }
