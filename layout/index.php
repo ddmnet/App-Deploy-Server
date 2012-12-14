@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>DDM App Deployment Panel</title>
+		<title>DDM Apps</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/layout/img/ddm-icon-72x72.png">
