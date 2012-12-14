@@ -22,10 +22,12 @@ class Bundle {
 						$ret['plist'] = $this->dir . '/' . $entry;
 					} else if (preg_match('/^(.*)\.ipa/', $entry)) {
 						$ret['ipa'] = $this->dir . '/' . $entry;
-					} else if (preg_match('/^icon-?([0-9]{2,3})?\.png$/', $entry, $matches)) {
+					} else if (preg_match('/^readme.md$/i', $entry)) {
+						$ret['readme'] = $this->dir . '/' . $entry;
+					} else if (preg_match('/^(icon)-?([0-9]{2,3})?\.png$/i', $entry, $matches)) {
 						$icon = 'icon';
-						if (!empty($matches[1])) {
-							$icon .= '-' . $matches[1];
+						if (!empty($matches[2])) {
+							$icon .= '-' . $matches[2];
 						}
 						$ret[$icon] = $this->dir . '/' . $entry;
 					}
