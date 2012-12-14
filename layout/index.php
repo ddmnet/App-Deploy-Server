@@ -3,6 +3,11 @@
 	<head>
 		<title>DDM App Deployment Panel</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/layout/img/ddm-icon-72x72.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/layout/img/ddm-icon-114x114.png">
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/layout/img/ddm-icon-144x144.png">
+		<link rel="apple-touch-icon-precomposed" href="/layout/img/ddm-icon-57x57.png">
 		<link href="3p/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 		<link href="3p/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen" />
 		<link href="layout/css/style.css" rel="stylesheet" media="screen" />
