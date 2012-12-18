@@ -12,6 +12,8 @@ if (file_exists($icon)) {
 $version = $bundle->get_metadata('bundle-version');
 $versionString = '<small>v. ' . $version . '</small>';
 
+$sizeString = '<small>' . $app->get_size() . '</small>';
+
 $subtitle = $bundle->get_metadata('subtitle');
 if ($subtitle !== false) {
 	$subtitleString = '' . $subtitle . '<br/>';
@@ -24,9 +26,9 @@ if ($subtitle !== false) {
 		<div class="well media">
 			<a class="pull-left" href="<?=$itms_url?>"><img class="img-rounded" <?=$img_src?> height="72" width="72"/></a>
 			<div class="media-body">
-				<p><strong><?=$bundle->get_title()?></strong><br/>
+				<p><strong><?=$bundle->get_title()?></strong> <?=$sizeString?><br/>
 					<?=$subtitleString?>
-					<?=$versionString?>
+					<?=$versionString?> 
 				</p>
 				<p>
 					<a class="btn btn-primary" href="<?=$itms_url?>"><i class="icon-download icon-white"></i> Install</a>
