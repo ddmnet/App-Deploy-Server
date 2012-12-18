@@ -2,6 +2,12 @@
 
 Howdy! This is TeamDDM's App Deploy server code. It's an extremely simple website developed in PHP.
 
+## What's it for?
+
+We use it on our internal network to make final / in-beta builds of our apps available to everybody in the company. It's intended as an extremely simple dashboard for company employees to have access to testing and demo apps.
+
+If you need something more robust (i.e. user permissions, login, tracking, bug reporting), you should probably look at something more robust like [TestFlight](http://testflightapp.com), which is awesome. But kinda complicated. (Please don't email me. We use TestFlight. It is awesome. But the level of effort it requires isn't sustainable for what we're doing with this. Thanks.)
+
 ## Requirements
 
 Apache, PHP, mod_rewrite, `.htaccess` (or access to your Apache config).
