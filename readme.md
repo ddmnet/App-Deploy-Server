@@ -50,7 +50,7 @@ The server will look at all the directories within in the "bundles" directory. T
 
 ## Special Thanks
 
- - [Twitter Bootstrap](http://twitter.github.com/bootstrap/) - We use Bootstrap to provide the theme and layout here. Simple. Responsive. Bland (because I haven't bothered to customize it yet.
+ - [Twitter Bootstrap](http://twitter.github.com/bootstrap/) - We use Bootstrap to provide the theme and layout here. Simple. Responsive. Bland, because I haven't bothered to customize it yet.
  - [jQuery](http://jquery.com/) - I'm pretty sure this gets used somewhere. Probably by the Bootstrap JS files for responsive. Although, come to think of it, I might not need it. Doesn't matter. jQuery is cool. Right?
  - [holder.js](https://github.com/imsky/holder) - This is really nice. Just adds a little holder image, for when you don't provide an icon for an app. Love it.
  - [PHP Markdown](http://michelf.com/projects/php-markdown) and [Markdown Classic](http://daringfireball.net/projects/markdown/) - Who doesn't love Markdown? I'm using it RIGHT NOW.
