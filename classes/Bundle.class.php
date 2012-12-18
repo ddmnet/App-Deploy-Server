@@ -59,6 +59,16 @@ class Bundle {
 		return $ret;
 	}
 
+	function get_size($human_readable = true) {
+		$contents = $this->get_contents();
+		$ret = filesize($contents['ipa']);
+		if ($human_readable) {
+			$sizes = array("B","KB","MB","GB","TB","PB","EB","ZB","YB");
+		    $ret = number_format($ret/pow(1024, $p = floor(log($ret, 1024))), 1) . ' ' . $sizes[$p];
+		}
+		return $ret;
+	}
+
 	function get_metadata($name) {
 		$ret = false;
 		$contents = $this->get_contents();

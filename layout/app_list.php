@@ -27,13 +27,15 @@
 						$subtitleString = '';
 					}
 
+					$sizeString = '<small>(' . $app->get_size() . ')</small>';
+
 					$extra_info_button = (isset($contents['readme'])) ? "<a class='btn' href='" . $app->name . "'><i class='icon-info-sign'></i> Info</a>" : '';
 ?>
 				<div class="span4">
 					<div class="well media">
 						<a class="pull-left" href="<?=$itms_url?>"><img class="img-rounded" <?=$img_src?> height="72" width="72"/></a>
 						<div class="media-body">
-							<p><strong><?=$app->get_title()?></strong> <?=$versionString?>
+							<p><strong><?=$app->get_title()?></strong> <?=$versionString?> <?=$sizeString?>
 								<?=$subtitleString?>
 								
 							</p>
