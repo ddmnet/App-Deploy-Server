@@ -47,3 +47,10 @@ The server will look at all the directories within in the "bundles" directory. T
 
  - Login. If you use this for enterprise deployment, make sure you put a login in front of it somehow, unless you are restricting access in some other way. At TeamDDM, we only have this server accessible from our internal network (presently, at least), so we aren't building a login system just yet.
  - Tracking. There's no tracking or information of any kind detailing who ipa's are getting distributed to or when. It just isn't needed yet (although it's something we're definitely thinking about).
+
+## Special Thanks
+
+ - [Twitter Bootstrap](http://twitter.github.com/bootstrap/) - We use Bootstrap to provide the theme and layout here. Simple. Responsive. Bland (because I haven't bothered to customize it yet.
+ - [jQuery](http://jquery.com/) - I'm pretty sure this gets used somewhere. Probably by the Bootstrap JS files for responsive. Although, come to think of it, I might not need it. Doesn't matter. jQuery is cool. Right?
+ - [holder.js](https://github.com/imsky/holder) - This is really nice. Just adds a little holder image, for when you don't provide an icon for an app. Love it.
+ - [PHP Markdown](http://michelf.com/projects/php-markdown) and [Markdown Classic](http://daringfireball.net/projects/markdown/) - Who doesn't love Markdown? I'm using it RIGHT NOW.
