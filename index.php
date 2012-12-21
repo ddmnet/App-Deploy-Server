@@ -44,9 +44,14 @@ if (!isset($_GET['url'])) {
 			$readme_file = $bundle->get_readme();
 			include_once '3p/markdown.php';
 			if ($readme_file !== false) {
-				$use_layout = "readme";
+				header('Content-Type: text/html');
 				$readme_text = file_get_contents($readme_file);
-				include 'layout/index.php';
+				if ($type == 'mod') {
+					include 'layout/modal_readme.php';
+				} else {
+					$use_layout = "readme";
+					include 'layout/index.php';
+				}
 			}
 		}
 	}

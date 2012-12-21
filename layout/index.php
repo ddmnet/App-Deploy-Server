@@ -28,5 +28,6 @@
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="/3p/bootstrap/js/bootstrap.min.js"></script>
 		<script src="/3p/holder.js"></script>
+		<script type="text/javascript" src="/js/behavior.js"></script>
 	</body>
 </html>

@@ -1,3 +1,7 @@
-#primary {
-	margin-top: 5em;
+body {
+	padding-top: 60px;
+}
+
+.modal-body .applink {
+	display: none;
 }
