@@ -9,7 +9,7 @@ if (file_exists($icon)) {
 	$img_src = 'data-src="holder.js/72x72/social"';
 }
 
-$version = $bundle->get_metadata('bundle-version');
+$version = $bundle->get_published_version();
 $versionString = '<small>v. ' . $version . '</small>';
 
 $sizeString = '<small>' . $bundle->get_size() . '</small>';
@@ -40,5 +40,16 @@ if ($subtitle !== false) {
 	<?
 	echo Markdown($readme_text);
 	?>
+
+	<p><strong>Other Versions:</strong><br/>
+	<?
+		$versions = $bundle->get_versions();
+		foreach( $versions as $ver ) {
+			$install_url = $bundle->url . $bundle->name . '-' . $ver . '.plist';
+			$itms_url = "itms-services://?action=download-manifest&url=$install_url";
+			echo "<a class='btn' href='$itms_url'><i class='icon-download'></i> Install $ver</a><br>";
+		}
+	?>
 	</div>
+
 </div>

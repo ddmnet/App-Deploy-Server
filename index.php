@@ -8,51 +8,55 @@ define('BUNDLE_ROOT', 'bundles');
 require_once 'classes/Bundle.class.php';
 
 if (!isset($_GET['url'])) {
-	$apps = array();
-	// Display all the bundles.
-	if ($bundlesDir = opendir(BUNDLE_ROOT)) {
-		while (false !== ($entry = readdir($bundlesDir))) {
-			$path = BUNDLE_ROOT . '/' . $entry;
-			if (is_dir($path) && strpos($entry, '.') !== 0) {
-				$bundle = new Bundle($entry);
-				$contents = $bundle->get_contents();
-				$is_bundle = (!empty($contents));
-				if ($is_bundle) {
-					$apps[] = $bundle;
-				}
-			}
-		}
-	}
+	$apps = load_all_bundles();
 	$app_list = ob_get_clean();
 	$use_layout = "app_list";
 	include 'layout/index.php';
-} else {
-	// Serve up the processed plist file.
-	$uri = $_GET['url'];
-	$s = explode('.', $uri);
-	$bundlename = $s[0];
-	$bundle = new Bundle($bundlename);
-	$contents = $bundle->get_contents();
-	$is_bundle = (!empty($contents));
+	return;
+}
 
-	if ($is_bundle) {
-		$type = (isset($s[1])) ? $s[1] : 'html';
-		if ($type == 'plist') {
-			header('Content-Type: text/xml');
-			echo $bundle->get_plist_contents();
-		} else {
-			$readme_file = $bundle->get_readme();
-			include_once '3p/markdown.php';
-			if ($readme_file !== false) {
-				header('Content-Type: text/html');
-				$readme_text = file_get_contents($readme_file);
-				if ($type == 'mod') {
-					include 'layout/modal_readme.php';
-				} else {
-					$use_layout = "readme";
-					include 'layout/index.php';
-				}
-			}
+// Serve up the processed plist file.
+$uri = $_GET['url'];
+$uri_info = pathinfo($uri);
+
+
+// matches "ProjectName.extension" or "ProjectName-1.2.3.4.extension":
+if( !preg_match('/^([^\-]*)\-?([\.0-9]*)?\.([a-zA-Z]*)$/', $uri_info['basename'], $matches) ) {	// || empty($matches[2])
+	header("HTTP/1.0 404 Not Found");
+	return;
+}
+
+$bundlename = $matches[1];
+$version = $matches[2];
+$type = $matches[3];
+
+$bundle = new Bundle($bundlename);
+if(!$bundle->is_bundle()) {
+	header("HTTP/1.0 404 Not Found");
+	return;
+}
+
+if ($type == 'plist') {
+	header('Content-Type: text/xml');
+	echo $bundle->get_plist_contents(strlen($version) > 0 ? $version : null);
+} else if($type == 'publish' ) {
+	header('Content-Type: text/html');
+	echo "Publish NYI";
+	$bundle->get_versions();
+} else if($type == 'mod' || $type == 'html') {
+	$readme_file = $bundle->get_readme();
+	include_once '3p/markdown.php';
+	if ($readme_file !== false) {
+		header('Content-Type: text/html');
+		$readme_text = file_get_contents($readme_file);
+		if ($type == 'mod') {
+			include 'layout/modal_readme.php';
+		} else if( $type == 'html' ) {
+			$use_layout = "readme";
+			include 'layout/index.php';
 		}
 	}
+} else {
+	
+
 }

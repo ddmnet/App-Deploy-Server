@@ -8,7 +8,7 @@ foreach ($chunks as $row) :
 <?
 		foreach ($row as $app):
 			$contents = $app->get_contents();
-			$install_url = $app->url . $app->name . '.plist';
+			$install_url = $app->url . $app->name . '-' . $app->get_published_version() . '.plist';
 			$itms_url = "itms-services://?action=download-manifest&url=$install_url";
 			$icon = $app->get_icon_url(false);
 			if (file_exists($icon)) {
@@ -17,7 +17,7 @@ foreach ($chunks as $row) :
 				$img_src = 'data-src="holder.js/72x72/social"';
 			}
 
-			$version = $app->get_metadata('bundle-version');
+			$version = $app->get_published_version();
 			$versionString = '<small>v. ' . $version . '</small>';
 
 			$subtitle = $app->get_metadata('subtitle');
