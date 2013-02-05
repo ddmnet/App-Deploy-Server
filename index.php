@@ -39,24 +39,26 @@ if(!$bundle->is_bundle()) {
 if ($type == 'plist') {
 	header('Content-Type: text/xml');
 	echo $bundle->get_plist_contents(strlen($version) > 0 ? $version : null);
-} else if($type == 'publish' ) {
-	header('Content-Type: text/html');
-	echo "Publish NYI";
-	$bundle->get_versions();
+} else if($type == 'set' ) {
+	header("Location: /".$bundlename.".html");
+	$bundle->set_published_version($version);
+} else if($type == 'push' ) {
+	// TODO: Execute the push script for the app, if it has one.
+	header('Content-Type: text/plain');
+	echo "Push NYI";
 } else if($type == 'mod' || $type == 'html') {
 	$readme_file = $bundle->get_readme();
 	include_once '3p/markdown.php';
+	header('Content-Type: text/html');
 	if ($readme_file !== false) {
-		header('Content-Type: text/html');
 		$readme_text = file_get_contents($readme_file);
-		if ($type == 'mod') {
-			include 'layout/modal_readme.php';
-		} else if( $type == 'html' ) {
-			$use_layout = "readme";
-			include 'layout/index.php';
-		}
+	} else {
+		$readme_text = "";		
 	}
-} else {
-	
-
+	if ($type == 'mod') {
+		include 'layout/modal_readme.php';
+	} else if( $type == 'html' ) {
+		$use_layout = "readme";
+		include 'layout/index.php';
+	}
 }

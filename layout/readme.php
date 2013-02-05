@@ -9,8 +9,8 @@ if (file_exists($icon)) {
 	$img_src = 'data-src="holder.js/72x72/social"';
 }
 
-$version = $bundle->get_published_version();
-$versionString = '<small>v. ' . $version . '</small>';
+$published_version = $bundle->get_published_version();
+$versionString = '<small>v. ' . $published_version . '</small>';
 
 $sizeString = '<small>' . $bundle->get_size() . '</small>';
 
@@ -41,15 +41,24 @@ if ($subtitle !== false) {
 	echo Markdown($readme_text);
 	?>
 
-	<p><strong>Other Versions:</strong><br/>
+	<table class="table table-condensed">
+		<tr><th style=''>Publish<th>Version<th>Install<th>Push to Destination
 	<?
 		$versions = $bundle->get_versions();
 		foreach( $versions as $ver ) {
+			$active_version = strcmp( $ver, $published_version ) == 0;
 			$install_url = $bundle->url . $bundle->name . '-' . $ver . '.plist';
+			$publish_url = $bundle->url . $bundle->name . '-' . $ver . '.set';
+			$push_url = $bundle->url . $bundle->name . '-' . $ver . '.push';
 			$itms_url = "itms-services://?action=download-manifest&url=$install_url";
-			echo "<a class='btn' href='$itms_url'><i class='icon-download'></i> Install $ver</a><br>";
+			echo "<tr><td>".($active_version ? "<i class='icon-ok'></i> Active" : "<a class='btn btn-small' href='$publish_url'><i class='icon-tag'></i> Publish</a>") . "<td>$ver";
+			echo "<td><a class='btn btn-small' href='$itms_url'><i class='icon-download'></i> Install $ver</a>";
+			echo "<td><a class='btn btn-small' href='$push_url'><i class='icon-arrow-up'></i> Push $ver</a>";
 		}
 	?>
+	
+	</table>
+	
 	</div>
 
 </div>

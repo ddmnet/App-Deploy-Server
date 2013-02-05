@@ -165,6 +165,10 @@ class Bundle {
 		return $versions[$version_idx];
 	}
 
+	function set_published_version( $version ) {
+		file_put_contents( $this->contents['active'], $version );
+	}
+
 	function get_title() {
 		return $this->get_metadata('title');
 	}
