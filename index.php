@@ -17,11 +17,13 @@ if (!isset($_GET['url'])) {
 
 // Serve up the processed plist file.
 $uri = $_GET['url'];
-$uri_info = pathinfo($uri);
-
 
 // matches "ProjectName.extension" or "ProjectName-1.2.3.4.extension":
-if( !preg_match('/^([^\-]*)\-?([\.0-9]*)?\.([a-zA-Z]*)$/', $uri_info['basename'], $matches) ) {	// || empty($matches[2])
+// if( !preg_match('/^([^\-]*)\-?([\.0-9]*)?\.([a-zA-Z]*)$/', $uri_info['basename'], $matches) ) {	// || empty($matches[2])
+// 	header("HTTP/1.0 404 Not Found");
+// 	return;
+// }
+if( !preg_match('/([^_]*)_?([\.0-9]*)?\.([a-zA-Z]*)$/', $uri, $matches) ) {	// || empty($matches[2])
 	header("HTTP/1.0 404 Not Found");
 	return;
 }
@@ -42,10 +44,12 @@ if ($type == 'plist') {
 } else if($type == 'set' ) {
 	header("Location: /".$bundlename.".html");
 	$bundle->set_published_version($version);
-} else if($type == 'push' ) {
-	// TODO: Execute the push script for the app, if it has one.
-	header('Content-Type: text/plain');
-	echo "Push NYI";
+} else if($type == 'deploy' ) {
+	header('Content-Type: text/html');
+	//header("Location: /".$bundlename.".html");
+	$bundle->deploy($version);
+	$use_layout = "deploy_result";
+	include 'layout/index.php';
 } else if($type == 'mod' || $type == 'html') {
 	$readme_file = $bundle->get_readme();
 	include_once '3p/markdown.php';

@@ -42,6 +42,10 @@ The server will look at all the directories within in the "bundles" directory. T
 
  - `icon-72.png`: If you provide an icon-72, its URL will be provided to the plist via the ICON_72_URL placeholder. This file will also be used on the front-end of the site to display the icon of the app. If this is missing, the website will use a placeholder instead.
  - `readme.md`: If provided, an `Info` button will be placed next to your app's listing. This provides a standalone page for the app, so that you can detail any special instructions, credits, FAQ's that you want for the app.
+ - `deployment.json`: If prodivded, should contain a dictionary which has the following keys: type, URL, server, username, password. type can be "http" or "ftp". URL is only used for http type deployments. server, username and password define the FTP server, username and password.
+ - `active.txt`: If provided, contains a string which represents the active version. This file is written to by the server when the user changes the active version number.
+
+
 
 ## What's not here
 
