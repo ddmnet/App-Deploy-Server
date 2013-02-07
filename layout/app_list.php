@@ -8,7 +8,8 @@ foreach ($chunks as $row) :
 <?
 		foreach ($row as $app):
 			$contents = $app->get_contents();
-			$install_url = $app->url . $app->name . '.plist';
+			$install_url = $app->url . $app->name . '_' . $app->get_published_version() . '.plist';
+			$options_url = $app->url . $app->name . '.html';
 			$itms_url = "itms-services://?action=download-manifest&url=$install_url";
 			$icon = $app->get_icon_url(false);
 			if (file_exists($icon)) {
@@ -17,7 +18,7 @@ foreach ($chunks as $row) :
 				$img_src = 'data-src="holder.js/72x72/social"';
 			}
 
-			$version = $app->get_metadata('bundle-version');
+			$version = $app->get_published_version();
 			$versionString = '<small>v. ' . $version . '</small>';
 
 			$subtitle = $app->get_metadata('subtitle');
@@ -30,6 +31,7 @@ foreach ($chunks as $row) :
 			$sizeString = '<small>(' . $app->get_size() . ')</small>';
 
 			$extra_info_button = (isset($contents['readme'])) ? "<a class='btn' role='button' data-toggle='modal' data-target='#infoModal' href='" . $app->name . ".mod'><i class='icon-info-sign'></i> Info</a>" : '';
+			$options_button = "<a class='btn' href='$options_url'><i class='icon-cog'></i></a>";
 ?>
 		<div class="span4">
 			<div class="well media">
@@ -42,6 +44,7 @@ foreach ($chunks as $row) :
 					<p>
 						<a class="btn btn-primary" href="<?=$itms_url?>"><i class="icon-download icon-white"></i> Install</a>
 						<?=$extra_info_button?>
+						<?=$options_button?>
 					</p>
 				</div>
 			</div>

@@ -9,8 +9,8 @@ if (file_exists($icon)) {
 	$img_src = 'data-src="holder.js/72x72/social"';
 }
 
-$version = $bundle->get_metadata('bundle-version');
-$versionString = '<small>v. ' . $version . '</small>';
+$published_version = $bundle->get_published_version();
+$versionString = '<small>v. ' . $published_version . '</small>';
 
 $sizeString = '<small>' . $bundle->get_size() . '</small>';
 
@@ -20,6 +20,11 @@ if ($subtitle !== false) {
 } else {
 	$subtitleString = '';
 }
+$versions = $bundle->get_versions();
+$deployment_info = $bundle->get_deployment_info();
+$deployment_url = isset($deployment_info->URL) ? $deployment_info->URL : $deployment_info->server;
+$can_deploy = !($deployment_info === false);
+
 ?>
 <div class="row">
 	<div class="span3">
@@ -40,5 +45,32 @@ if ($subtitle !== false) {
 	<?
 	echo Markdown($readme_text);
 	?>
+
+	<table class="table table-condensed">
+		<tr><th>Version<th style=''>Publish<th>Install
+	<?
+		if( $can_deploy ) {
+			echo "<th>Deploy to Production";
+		}
+		foreach( $versions as $ver ) {
+			$active_version = strcmp( $ver, $published_version ) == 0;
+			$install_url = $bundle->url . $bundle->name . '_' . $ver . '.plist';
+			$publish_url = $bundle->url . $bundle->name . '_' . $ver . '.set';
+			$push_url = $bundle->url . $bundle->name . '_' . $ver . '.deploy';
+			$itms_url = "itms-services://?action=download-manifest&url=$install_url";
+			echo "<tr><td>$ver<td>".($active_version ? "<i class='icon-ok'></i> Active" : "<a class='btn btn-small' href='$publish_url'><i class='icon-tag'></i> Publish</a>");
+			echo "<td><a class='btn btn-small' href='$itms_url'><i class='icon-download'></i> Install $ver</a>";
+			if( $can_deploy ) {
+				echo "<td><a class='btn btn-small' href='$push_url'><i class='icon-arrow-up'></i> Deploy $ver</a>";
+			}
+		}
+
+		
+	?>
+	
+	</table>
+	<? if( $can_deploy ) { echo "<i>Deploys to $deployment_url using method " . $deployment_info->type . "<br>"; } ?>
+	
 	</div>
+
 </div>
