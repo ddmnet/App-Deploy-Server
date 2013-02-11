@@ -29,12 +29,15 @@ class Bundle {
 	var $root = BUNDLE_ROOT;
 	var $dir;
 	var $name;
+	var $metadata;
 
 	function __construct($name) {
 		$this->name = $name;
 		$this->dir = $this->root . '/' . $this->name;
 		$protocol = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
 		$this->url = $protocol . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
+
+		$this->metadata = array();
 
 		$this->get_contents();	// it's being call everywhere anyway, might as well do it right away
 	}
@@ -115,24 +118,13 @@ class Bundle {
 	}
 
 	function get_metadata($name) {
-		$ret = false;
-		$plist = simplexml_load_file($this->contents['plist']);
-		// find metadata dict
-		$items = $plist->dict->array->dict->dict;	// ewww
-		$n = 0;
-		$tindex = false;
-		foreach ($items->key as $key) {
-			if ($key == $name) {
-				$tindex = $n;
-				break;
-			} else {
-				$n++;
-			}
+		if (empty($this->metadata)) {
+			require_once('3p/plist.php');
+			$plist = new Skyzyx\Components\Plist;
+			$values = $plist->parseFile($_SERVER['DOCUMENT_ROOT'] . '/' . $this->contents['plist']);
+			$this->metadata = $values['items'][0]['metadata'];
 		}
-		if ($tindex) {
-			$ret = $items->string[$tindex];
-		}
-		return $ret;
+		return (empty($this->metadata[$name]) ? false : $this->metadata[$name]);
 	}
 
 	function get_published_version() {
@@ -238,7 +230,8 @@ class Bundle {
 
 	function deploy_via_ftp($version, $ipa_file, $ftp_server, $ftp_username, $ftp_password, $base_path) {
 		// note: FTP transfer does not put the plist file
-		$destination_file = $base_path . "/" . $this->name . "-" . $version . ".ipa";
+		$filename = $this->get_metadata('bundle-identifier');
+		$destination_file = $base_path . "/" . $filename . "-" . $version . ".ipa";
 
 		$conn_id = ftp_connect($ftp_server); 
 		$login_result = ftp_login($conn_id, $ftp_username, $ftp_password); 
