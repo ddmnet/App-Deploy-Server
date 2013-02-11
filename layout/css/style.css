@@ -5,3 +5,9 @@ body {
 .modal-body .applink {
 	display: none;
 }
+
+@media (max-width: 480px) { 
+	body {
+		padding-top: 0;
+	}
+}
