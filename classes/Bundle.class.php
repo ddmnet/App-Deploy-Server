@@ -250,6 +250,8 @@ class Bundle {
 			return false;
 		} 
 
+		ftp_pasv($conn_id, true);
+
 		$upload = ftp_put($conn_id, $destination_file, $ipa_file, FTP_BINARY); 
 		if (!$upload) { 
 			ftp_close($conn_id); 
