@@ -211,7 +211,9 @@ class Bundle {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		$deployment_info = json_decode(curl_exec($ch));
+		$resp = curl_exec($ch);
+		echo($resp);
+		$deployment_info = json_decode($resp);	
 		curl_close($ch);
 
 		//echo "DEPLOYMENT URL: ". $deployment_info->url . "<br>";
