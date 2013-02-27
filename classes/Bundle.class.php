@@ -1,11 +1,11 @@
 <?php
 
-function load_all_bundles() {
+function load_all_bundles($group = false) {
 	// Load all the bundles.
 	if( !($bundlesDir = opendir(BUNDLE_ROOT)) ) {
 		return array();
 	}
-
+	$all_groups = array();
 	$apps = array();
 	while( ($entry = readdir($bundlesDir)) ) {
 		$path = BUNDLE_ROOT . '/' . $entry;
@@ -17,11 +17,22 @@ function load_all_bundles() {
 		if(!$bundle->is_bundle()) {
 			continue;
 		}
+		$groups = $bundle->get_groups_list();
 
-		$apps[] = $bundle;
+		foreach( $groups as $bundle_group ) {
+			if( !(array_search( $bundle_group, $all_groups ) ) ) {
+				$all_groups[] = $bundle_group;
+			}
+		}
+
+
+		if( $group === false || !(array_search( $group, $groups ) === false ) )
+		{
+			$apps[] = $bundle;
+		}
 	}
 
-	return $apps;
+	return array( 'apps' => $apps, 'groups' => $all_groups );
 }
 
 class Bundle {
@@ -66,6 +77,8 @@ class Bundle {
 				$ret['active'] = $this->dir . '/' . $entry;
 			} else if (preg_match('/^deployment.json$/i', $entry)) {
 				$ret['deployment'] = $this->dir . '/' . $entry;
+			} else if (preg_match('/^groups.json$/i', $entry)) {
+				$ret['groups'] = $this->dir . '/' . $entry;
 			} else if (preg_match('/^(icon)-?([0-9]{2,3})?\.png$/i', $entry, $matches)) {
 				$icon = 'icon';
 				if (!empty($matches[2])) {
@@ -172,7 +185,14 @@ class Bundle {
 		$plist_contents = file_get_contents($this->contents['plist']);
 		return $this->replace_variables($plist_contents, $replace);
 	}
-
+	
+	function get_groups_list() {
+		if(!isset( $this->contents['groups'] ) ) {
+			return array();
+		}
+		return json_decode(file_get_contents( $this->contents['groups'] ));
+	}
+	
 	function get_deployment_info() {
 		if( !isset( $this->contents['deployment'] ) ) {
 			return false;

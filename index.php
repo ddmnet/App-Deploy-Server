@@ -8,7 +8,10 @@ define('BUNDLE_ROOT', 'bundles');
 require_once 'classes/Bundle.class.php';
 
 if (!isset($_GET['url'])) {
-	$apps = load_all_bundles();
+	$selected_group = isset($_GET['group']) ? $_GET['group'] : false;
+	$bundles = load_all_bundles($selected_group);
+	$all_groups = $bundles['groups'];
+	$apps = $bundles['apps'];
 	$app_list = ob_get_clean();
 	$use_layout = "app_list";
 	include 'layout/index.php';
