@@ -1,5 +1,8 @@
 <?
 // app list layout
+if( count($apps) == 0 ) {
+	?> <h2>No Apps</h2> <?
+}
 
 $chunks = array_chunk($apps, 3);
 foreach ($chunks as $row) :
