@@ -20,7 +20,7 @@ function load_all_bundles($group = false) {
 		$groups = $bundle->get_groups_list();
 
 		foreach( $groups as $bundle_group ) {
-			if( !(array_search( $bundle_group, $all_groups ) ) ) {
+			if( (array_search( $bundle_group, $all_groups ) ) === false ) {
 				$all_groups[] = $bundle_group;
 			}
 		}
