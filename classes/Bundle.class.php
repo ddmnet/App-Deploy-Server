@@ -31,7 +31,7 @@ function load_all_bundles($group = false) {
 			$apps[] = $bundle;
 		}
 	}
-
+	asort($all_groups);
 	return array( 'apps' => $apps, 'groups' => $all_groups );
 }
 
