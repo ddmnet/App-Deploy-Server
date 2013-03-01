@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>DDM Apps</title>
+		<title>DDM Apps <? if( $selected_group !== false ) :?> : <?=$selected_group?> <? endif; ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/layout/img/ddm-icon-72x72.png">
@@ -17,6 +17,24 @@
 			<div class="navbar-inner">
 				<div class="container">
 					<a class="brand" href="/">DDM App Deployment Portal</a>
+		
+					<ul class="nav">
+
+						<? if( count($all_groups) > 0 ) : ?>
+      					<li>
+<div class="btn-group">
+  <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+    Groups
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+  	<? foreach( $all_groups as $group ) : ?>
+    <li <? if( $group == $selected_group ) : ?>class="active"<? endif; ?> ><a href='/?group=<?=$group?>'><?=$group?></a></li>
+    <? endforeach; ?>
+  </ul>
+</div>
+      					</li><? endif; ?>
+					</ul>
 				</div>
 			</div>
 		</div>
