@@ -87,7 +87,7 @@ class Bundle {
 				$ret[$icon] = $this->dir . '/' . $entry;
 			}
 		}
-
+		
 		$this->contents = $ret;
 		
 		return $this->contents;
@@ -158,7 +158,7 @@ class Bundle {
 	}
 
 	function set_published_version( $version ) {
-		file_put_contents( $this->contents['active'], $version );
+		file_put_contents( $this->dir . '/active.txt', $version );
 	}
 
 	function get_title() {
