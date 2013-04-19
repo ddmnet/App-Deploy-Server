@@ -248,6 +248,7 @@ class Bundle {
 
 		unlink( $tmp_plist_filename );
 		unlink( $tmp_ipa_filename );
+		return $success;
 	}
 
 	function deploy_via_ftp($version, $ipa_file, $ftp_server, $ftp_username, $ftp_password, $base_path) {
@@ -313,6 +314,47 @@ class Bundle {
 
 			return $this->deploy_via_ftp($version, $ipa_file, $dinfo->server, $dinfo->username, $dinfo->password, $dinfo->directory);
 		}
+	}
+
+	function notify($version) {
+		// mail( "grantj@teamddm.com", "Push notification on " . $value->repository->name, print_r($value, true) . "\n" . $jenkins_url . " responded:\n" . $output );
+		
+		// get the correct IPA for the specified version:
+		$versions = $this->get_versions();
+		$version_idx = array_search( $version, $versions );
+		if( $version_idx === false ) {
+			// if we can't find the version use the first version we find
+			$ipa_file = $this->contents['ipas'][0];
+			$version = $versions[0];
+		} else {
+			$ipa_file = $this->contents['ipas'][$version_idx];
+		}
+
+		$dinfo = $this->get_deployment_info();
+
+		if( $dinfo->type == 'http' ) {
+			$url = $dinfo->URL;
+			if($url === false) {
+				echo "Missing \"URL\" in deployment.json file";
+				return false;
+			}
+ 			// $dinfo->URL . '/' .
+			$deployment_url = $ipa_file;
+		} else if( $dinfo->type == 'ftp' ) {
+			$filename = $this->get_metadata('bundle-identifier');
+			$deployment_url = $dinfo->directory . "/" . $filename . "-" . $version . ".ipa";
+		}
+
+		$send_list = array();
+		foreach( $dinfo->notify as $notify_info ) {
+			if( mail( $notify_info->email, $notify_info->subject, $notify_info->body . "\n" . $deployment_url ) ) {
+				$send_list[] = "Email successfully sent to " . $notify_info->email;
+			} else {
+				$send_list[] = "Email to " . $notify_info->email . " failed.";
+			}
+		}
+		
+		return $send_list;
 	}
 
 }
