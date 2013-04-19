@@ -50,8 +50,13 @@ if ($type == 'plist') {
 } else if($type == 'deploy' ) {
 	header('Content-Type: text/html');
 	//header("Location: /".$bundlename.".html");
-	$bundle->deploy($version);
+	$deploy_result = $bundle->deploy($version);
 	$use_layout = "deploy_result";
+	include 'layout/index.php';
+} else if($type == 'notify' ) {
+	header('Content-Type: text/html');
+	$send_results_list = $bundle->notify($version);
+	$use_layout = "notify_result";
 	include 'layout/index.php';
 } else if($type == 'mod' || $type == 'html') {
 	$readme_file = $bundle->get_readme();
