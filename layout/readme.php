@@ -51,17 +51,21 @@ $can_deploy = !($deployment_info === false);
 	<?
 		if( $can_deploy ) {
 			echo "<th>Deploy to Production";
+			echo "<th>Send Email";
 		}
 		foreach( $versions as $ver ) {
 			$active_version = strcmp( $ver, $published_version ) == 0;
 			$install_url = $bundle->url . $bundle->name . '_' . $ver . '.plist';
 			$publish_url = $bundle->url . $bundle->name . '_' . $ver . '.set';
 			$push_url = $bundle->url . $bundle->name . '_' . $ver . '.deploy';
+			$notify_url = $bundle->url . $bundle->name . '_' . $ver . '.notify';
+
 			$itms_url = "itms-services://?action=download-manifest&url=$install_url";
 			echo "<tr><td>$ver<td>".($active_version ? "<i class='icon-ok'></i> Active" : "<a class='btn btn-small' href='$publish_url'><i class='icon-tag'></i> Publish</a>");
 			echo "<td><a class='btn btn-small' href='$itms_url'><i class='icon-download'></i> Install $ver</a>";
 			if( $can_deploy ) {
 				echo "<td><a class='btn btn-small' href='$push_url'><i class='icon-arrow-up'></i> Deploy $ver</a>";
+				echo "<td><a class='btn btn-small' href='$notify_url'><i class='icon-arrow-up'></i> Send Notification for $ver</a>";
 			}
 		}
 
@@ -69,7 +73,13 @@ $can_deploy = !($deployment_info === false);
 	?>
 	
 	</table>
-	<? if( $can_deploy ) { echo "<i>Deploys to $deployment_url using method " . $deployment_info->type . "<br>"; } ?>
+	<? if( $can_deploy ) {
+		echo "<i>Deploys to $deployment_url using method " . $deployment_info->type . "<br>";
+		foreach( $deployment_info->notify as $notify_info ) {
+			echo "<i>Notifies by Email: " . $notify_info->email . "<br>";
+			// $notify_info->subject, $notify_info->body
+		}
+	} ?>
 	
 	</div>
 
